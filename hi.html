@@ -2,7 +2,6 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <!-- Название вкладки, чтобы не вызывать подозрений -->
     <title>Google Drive</title>
     <style>
         body {
@@ -13,6 +12,8 @@
             height: 100vh;
             margin: 0;
             background-color: #202124;
+            color: white;
+            flex-direction: column;
         }
         button {
             padding: 15px 30px;
@@ -22,48 +23,67 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            margin-top: 20px;
         }
         button:hover { background-color: #9ebff9; }
+        .instructions {
+            text-align: center;
+            max-width: 600px;
+            line-height: 1.5;
+            font-size: 18px;
+        }
+        .code {
+            background-color: #303134;
+            padding: 10px;
+            border-radius: 8px;
+            font-family: monospace;
+            color: #8ab4f8;
+            user-select: all;
+        }
     </style>
 </head>
 <body>
 
-    <button onclick="openCloak()">Launch</button>
+    <div class="instructions">
+        <h2>Маскировка + Прокси</h2>
+        <p>1. Нажмите кнопку ниже, чтобы открыть скрытую вкладку.</p>
+        <p>2. Скопируйте эту ссылку и вставьте её в строку поиска внутри открывшегося CroxyProxy:</p>
+        <p class="code">https://blooketbot.schoolcheats.net/</p>
+    </div>
+
+    <button onclick="openCloak()">Открыть скрытую вкладку</button>
 
     <script>
         function openCloak() {
-            // Открываем новую вкладку about:blank
             var win = window.open('about:blank', '_blank');
-            
-            // Если браузер заблокировал всплывающее окно
             if (!win) {
-                alert("Пожалуйста, разрешите всплывающие окна для этого файла!");
+                alert("Пожалуйста, разрешите всплывающие окна!");
                 return;
             }
 
-            // Настраиваем страницу
             win.document.body.style.margin = '0';
             win.document.body.style.height = '100vh';
             
-            // Делаем вкладку похожей на Google
+            // Маскировка под Google Drive
             win.document.title = "Google Drive";
             var link = win.document.createElement('link');
             link.rel = 'icon';
             link.href = 'https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_32dp.png';
             win.document.head.appendChild(link);
 
-            // Создаем iframe (окно, в котором загрузится нужный сайт)
             var iframe = win.document.createElement('iframe');
             iframe.style.border = 'none';
             iframe.style.width = '100vw';
             iframe.style.height = '100vh';
             iframe.style.margin = '0';
-            iframe.src = 'https://blooketbot.schoolcheats.net/';
+            
+            // Вставляем ссылку на прокси
+            iframe.src = 'https://www.croxyproxy.com/';
             
             win.document.body.appendChild(iframe);
             
-            // Опционально: можно перенаправить исходную страницу куда-то еще, чтобы спрятать улики
-            // window.location.replace('https://classroom.google.com');
+            // Перенаправление этой страницы, чтобы учитель не увидел кнопку "Launch"
+            window.location.replace('https://classroom.google.com');
         }
     </script>
 </body>
