@@ -1886,6 +1886,7 @@ function updateStatus(text) {
 
 function createButton(text, clickaction) {
     var button = document.createElement("button");
+    button.className = "button";
     button.innerText = text;
     button.addEventListener("click", function () {
         clickaction(button);
@@ -1987,11 +1988,15 @@ function createSel(text, cpval, action) {
             });
         }
     });
+    
+    // Auto-submit on change
+    iv.addEventListener("change", function () {
+        if(iv.value) action(iv.value);
+    });
+
     inp.appendChild(iv);
     inp.addEventListener("click", function (e) {
-        if (e.target === iv) {
-            return;
-        }
+        if (e.target === iv) return;
         action(iv.value);
     });
     return inp;
@@ -2060,22 +2065,26 @@ function createCsSel(text, vals, action) {
     inp.appendChild(ti);
     var iv = document.createElement("input");
     iv.className = "typing-dropdown";
-    iv.setAttribute("list", "options-" + text);
+    iv.setAttribute("list", "options-" + text.replace(/\s+/g, ''));
     iv.setAttribute("placeholder", "Select or Type");
     inp.appendChild(iv);
     var dl = document.createElement("datalist");
-    dl.id = "options-" + text;
-    vals.sort().forEach((e) => {
+    dl.id = "options-" + text.replace(/\s+/g, '');
+    vals.sort((a, b) => (a?.name || "").localeCompare(b?.name || "")).forEach((e) => {
         var opt = document.createElement("option");
-        opt.innerText = e?.name;
         opt.value = e?.value;
-        iv.appendChild(opt);
+        opt.innerText = e?.name;
+        dl.appendChild(opt);
     });
-    inp.appendChild(iv);
+    inp.appendChild(dl);
+    
+    // Auto-submit on change
+    iv.addEventListener("change", function () {
+        if(iv.value) action(iv.value);
+    });
+    
     inp.addEventListener("click", function (e) {
-        if (e.target === iv) {
-            return;
-        }
+        if (e.target === iv) return;
         action(iv.value);
     });
     return inp;
