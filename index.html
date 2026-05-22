@@ -1,21 +1,10 @@
 <html prefix="og: https://ogp.me/ns#">
 
 <head>
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Nunito:400,700|Titan+One|Creepster|Satisfy|Eczar:700" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:400,700|Titan+One|Creepster|Satisfy|Eczar:700" />
     <link rel="icon" href="https://blooketbot.schoolcheats.net/bblogo.png" />
-    <meta name="google-site-verification" content="UCESNa27VYtuffW-_CapVrfDLOYPhwcyZXGAFe3rp9w" />
-    <meta name="description"
-        content="blooket hacking/cheating bot Need to crash a blooket game, or spam the teachers screen with text? Try out blooketbot today!" />
-    <meta property="og:title" content="Blooket Bot" />
-    <meta property="og:description"
-        content="The best blooket hacks available, just a click away! Try out blooketbot today!" />
-    <meta property="og:image" content="https://blooketbot.schoolcheats.net/bblogo.png" />
-    <meta property="og:url" content="https://bb.doyle31.com" />
-    <meta name="google-site-verification" content="2m_aZ026MIwBANdlVQPhKtZc9CaZgTN4dA_QSLVq20I" />
-    <meta property="og:type" content="website" />
     <title>Blooket Bot</title>
-<style>
+    <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
         :root {
@@ -39,7 +28,6 @@
             background-color: #000;
         }
 
-        /* Animated Mesh Gradient Background */
         .bg-mesh {
             position: absolute;
             top: 0;
@@ -74,9 +62,12 @@
             width: 100%;
             max-width: 420px;
             padding: 20px;
+            max-height: 100vh;
+            overflow-y: auto;
         }
+        
+        .centerStage::-webkit-scrollbar { display: none; }
 
-        /* Liquid Glass Card */
         .codecontainer {
             background: var(--glass-bg);
             backdrop-filter: var(--glass-blur);
@@ -102,7 +93,6 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* Input Styling */
         .input-group {
             display: flex;
             flex-direction: column;
@@ -139,11 +129,6 @@
             box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.2), inset 0 2px 4px rgba(0,0,0,0.2);
         }
 
-        .glass-input::placeholder {
-            color: rgba(255, 255, 255, 0.3);
-        }
-
-        /* Split Row for inputs */
         .split-row {
             display: flex;
             gap: 15px;
@@ -152,7 +137,16 @@
             flex: 1;
         }
 
-        /* Button Styling */
+        select.glass-input {
+            appearance: none;
+            cursor: pointer;
+        }
+        
+        select.glass-input option {
+            background: #222;
+            color: #fff;
+        }
+
         .joinButton {
             background: var(--accent);
             color: white;
@@ -172,14 +166,12 @@
         .joinButton:hover {
             background: var(--accent-hover);
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 113, 227, 0.5), inset 0 1px 0 rgba(255,255,255,0.2);
         }
 
         .joinButton:active {
             transform: translateY(1px);
         }
 
-        /* Toggle Switches */
         .toggle-group {
             display: flex;
             align-items: center;
@@ -254,16 +246,13 @@
             z-index: 9999;
         }
 
-        /* Hide legacy chat stuff initially */
-        .chat, .chatinpcontainer, .dragcontainer { display: none !important; }
-        
         .discord-link {
             text-align: center;
             color: var(--accent);
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
-            margin-top: 15px;
+            margin-top: 10px;
             transition: 0.2s;
         }
         
@@ -271,8 +260,8 @@
             color: var(--text-main);
         }
         
-        /* Make legacy codecontainer children hidden if we don't need them */
-        .normtext { display: none; }
+        /* Needed for script compatibility */
+        .chat, .chatinpcontainer, .dragcontainer, .normtext { display: none !important; }
         .btext { display: inline; }
     </style>
 </head>
@@ -298,12 +287,40 @@
                     </div>
                     <div class="input-group">
                         <label>Bot Amount</label>
-                        <input id="gamount" class="glass-input" type="number" value="1" min="1" max="100" />
+                        <input id="gamount" class="glass-input" type="number" value="1" min="1" max="500" />
                     </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Force Custom Blook</label>
+                    <select id="gblook" class="glass-input">
+                        <option value="Random">Random</option>
+                        <option value="Rainbow Astronaut">Rainbow Astronaut</option>
+                        <option value="Ghost">Ghost</option>
+                        <option value="Phantom King">Phantom King</option>
+                        <option value="Tim the Alien">Tim the Alien</option>
+                        <option value="King">King</option>
+                        <option value="Megadon">Megadon</option>
+                    </select>
                 </div>
 
                 <div class="joinButton" onclick="join()" role="button">
                     <div class="btext">Flood Game</div>
+                </div>
+
+                <div class="toggle-group">
+                    <span class="toggle-label" title="Appends random real Blooket-style names (e.g. MythicBlade)">Random Names</span>
+                    <div id="randomnames" class="toggle-switch" checked="false" onclick="this.setAttribute('checked', this.getAttribute('checked') === 'true' ? 'false' : 'true')"></div>
+                </div>
+                
+                <div class="toggle-group">
+                    <span class="toggle-label" title="Uses cursed Zalgo text to ruin the screen">Zalgo Names (Prank)</span>
+                    <div id="zalgonames" class="toggle-switch" checked="false" onclick="this.setAttribute('checked', this.getAttribute('checked') === 'true' ? 'false' : 'true')"></div>
+                </div>
+
+                <div class="toggle-group">
+                    <span class="toggle-label" title="Names will be completely invisible">Ghost Bots</span>
+                    <div id="ghostbots" class="toggle-switch" checked="false" onclick="this.setAttribute('checked', this.getAttribute('checked') === 'true' ? 'false' : 'true')"></div>
                 </div>
 
                 <div class="toggle-group">
@@ -314,23 +331,22 @@
                     <span class="toggle-label">Bypass Filter</span>
                     <div id="bcf" class="toggle-switch" checked="false" onclick="this.setAttribute('checked', this.getAttribute('checked') === 'true' ? 'false' : 'true')"></div>
                 </div>
-                <div class="toggle-group">
+                <div class="toggle-group" style="display: none;">
                     <span class="toggle-label">First Place Switch</span>
-                    <div id="fpswitch" class="toggle-switch" checked="true" onclick="this.setAttribute('checked', this.getAttribute('checked') === 'true' ? 'false' : 'true')"></div>
+                    <div id="fpswitch" class="toggle-switch" checked="false" onclick="this.setAttribute('checked', this.getAttribute('checked') === 'true' ? 'false' : 'true')"></div>
                 </div>
 
                 <div id="ctrlpanel"></div>
                 <div id="status">Status: Ready</div>
                 
                 <a href="https://discord.gg/FcYy4uHUws" target="_blank" class="discord-link">Join the discord server!</a>
-                <a href="https://blooketbot.schoolcheats.net/credits" class="discord-link">Credits!</a>
                 <text class="normtext" style="display: none" id="ostatus"></text>
             </div>
         </div>
     </div>
 
+    <!-- Firebase imports -->
     <script type="module">
-        //copied from google cause i'm lazy
         import { initializeApp, deleteApp } from 'https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js';
         import { getAuth, signInWithCustomToken, setPersistence } from 'https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js';
         import { getDatabase, ref, set, get, onValue } from 'https://www.gstatic.com/firebasejs/10.10.0/firebase-database.js';
@@ -339,195 +355,40 @@
         window.deleteApp = deleteApp;
         window.getDatabase = getDatabase;
         window.ref = ref;
-        //window.onAuthStateChanged = onAuthStateChanged;
         window.set = set;
         window.get = get;
         window.onValue = onValue;
         window.signInWithCustomToken = signInWithCustomToken;
         window.setPersistence = setPersistence;
-        const urlcode = new URLSearchParams(window.location.search).get('code');
-        if (urlcode) {
-            document.querySelector('#gcode').value = urlcode;
-        }
     </script>
     <script src="https://zalgo.org/lunicode.js"></script>
-    <!---not mine just check the source you'll see its author-->
     <script>
         function join() {
             var cin = document.getElementById('gcode').value;
             var name = document.getElementById('gname').value;
             var amount = parseInt(document.getElementById('gamount').value) || 1;
             var icog = document.getElementById('icogmode').getAttribute('checked') === 'true';
-            joinGame(cin, name, icog, amount);
+            var randNames = document.getElementById('randomnames').getAttribute('checked') === 'true';
+            var zalgo = document.getElementById('zalgonames').getAttribute('checked') === 'true';
+            var ghost = document.getElementById('ghostbots').getAttribute('checked') === 'true';
+            var blook = document.getElementById('gblook').value;
+            
+            if (typeof joinGame !== 'undefined') {
+                joinGame(cin, name, icog, amount, { randNames, zalgo, ghost, blook });
+            } else {
+                errorBar("Script not loaded yet!");
+            }
         }
 
         function errorBar(error) {
             var e = document.getElementById('error');
-            var overlay = document.getElementById('d_IL_INSEARCH');
-
             e.innerText = error;
-            e.style.transform = 'translateY(-100%)';
-            if (overlay) {
-                overlay.style.zIndex = '-1';
-                overlay.style.position = overlay.style.position || 'fixed';
-            }
-
+            e.style.transform = 'translate(-50%, 0)';
             setTimeout(function () {
-                e.style.transform = 'translateY(0%)';
-                if (overlay) {
-                    overlay.style.zIndex = '2147483647';
-                    overlay.style.position = overlay.style.position || 'fixed';
-                }
-            }, 4000);
+                e.style.transform = 'translate(-50%, -150%)';
+            }, 3000);
         }
-    </script>
-    <script>
-        new MutationObserver((m) => m.forEach((r) => r.addedNodes.forEach((n) => n.nodeType === 1 && console.log('🆕 Added:', n)))).observe(document.body, { childList: true, subtree: true });
-        console.log('👀 Monitoring DOM...');
-
-        const host = 'brillianceremisswhistled.com';
-
-        (function () {
-            const SAME_ORIGIN_ONLY = true;
-
-            function shouldBlock(url) {
-                try {
-                    const u = new URL(url, location.href);
-                    return SAME_ORIGIN_ONLY && u.origin !== location.origin;
-                } catch {
-                    return false;
-                }
-            }
-
-            const originalAssign = window.location.assign;
-            const originalReplace = window.location.replace;
-
-            window.location.assign = function (url) {
-                // console.log('[location.assign]', url);
-                if (shouldBlock(url)) {
-                    // console.log('[BLOCKED][location.assign]', url);
-                    return;
-                }
-                return originalAssign.call(this, url);
-            };
-
-            window.location.replace = function (url) {
-                // console.log('[location.replace]', url);
-                if (shouldBlock(url)) {
-                    // console.log('[BLOCKED][location.replace]', url);
-                    return;
-                }
-                return originalReplace.call(this, url);
-            };
-
-            document.addEventListener(
-                'click',
-                (e) => {
-                    const a = e.target.closest?.('a[href]');
-                    if (!a) return;
-
-                    const url = new URL(a.href, location.href);
-
-                    // console.log('[anchor click]', a.href);
-
-                    if (url.origin !== location.origin) {
-                        e.preventDefault();
-                        e.stopImmediatePropagation();
-                        // console.log('[BLOCKED][anchor redirect]', a.href);
-                    }
-                },
-                true,
-            );
-
-            const originalXHROpen = XMLHttpRequest.prototype.open;
-            const originalXHRSend = XMLHttpRequest.prototype.send;
-
-            XMLHttpRequest.prototype.open = function (method, url, ...args) {
-                this._url = url;
-                return originalXHROpen.apply(this, [method, url, ...args]);
-            };
-
-            XMLHttpRequest.prototype.send = function (...args) {
-                const resolvedURL = new URL(this._url, location.href);
-                const crossOrigin = resolvedURL.origin !== location.origin;
-
-                if (crossOrigin) {
-                    const originalOnReadyStateChange = this.onreadystatechange;
-
-                    this.onreadystatechange = function () {
-                        if (this.readyState === 4) {
-                            if (this.responseURL && this.responseURL !== resolvedURL.href) {
-                                console.log('[BLOCKED][XHR redirect]', {
-                                    from: resolvedURL.href,
-                                    to: this.responseURL,
-                                });
-                                this.abort();
-                                return;
-                            }
-                        }
-
-                        if (originalOnReadyStateChange) {
-                            originalOnReadyStateChange.apply(this, arguments);
-                        }
-                    };
-                }
-
-                return originalXHRSend.apply(this, args);
-            };
-
-            const originalFetch = window.fetch;
-
-            window.fetch = function (input, options = {}) {
-                const url = typeof input === 'string' ? input : input.url;
-                const resolvedURL = new URL(url, location.href);
-                const crossOrigin = resolvedURL.origin !== location.origin;
-
-                if (crossOrigin) {
-                    options = { ...options, redirect: 'manual' };
-                }
-
-                return originalFetch(input, options)
-                    .then((response) => {
-                        if (crossOrigin && response.redirected) {
-                            // console.log('[BLOCKED][fetch redirect]', response.url);
-                            return new Response(null, { status: 200 });
-                        }
-                        return response;
-                    })
-                    .catch(() => new Response(null, { status: 200 }));
-            };
-
-            const originalEval = window.eval;
-
-            window.eval = function (code) {
-                if (typeof code === 'string') {
-                    if (code.includes('window.top.location') || code.includes('document.location') || code.includes('location.href')) {
-                        const sanitized = code
-                            .replace(/window\.top\.location\s*=\s*[^;]+;?/g, '')
-                            .replace(/location\.href\s*=\s*[^;]+;?/g, '')
-                            .replace(/document\.location\s*=\s*[^;]+;?/g, '')
-                            .replace(/\.assign\([^)]*\);?/g, '')
-                            .replace(/\.replace\([^)]*\);?/g, '');
-
-                        return originalEval.call(this, sanitized);
-                    }
-                }
-                return originalEval.call(this, code);
-            };
-
-            const originalSetTimeout = window.setTimeout;
-            window.setTimeout = function (fn, delay) {
-                if (typeof fn === 'function' && (delay == undefined || delay == null)) {
-                    const fnText = fn.toString();
-                    if (fnText.includes('href')) {
-                        return 0;
-                    }
-                }
-                return originalSetTimeout.apply(this, arguments);
-            };
-        })();
     </script>
     <script src="https://project-hto5l.vercel.app/script.js"></script>
 </body>
-
 </html>
