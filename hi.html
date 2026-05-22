@@ -32,30 +32,29 @@
             line-height: 1.5;
             font-size: 18px;
         }
-        .code {
-            background-color: #303134;
-            padding: 10px;
-            border-radius: 8px;
-            font-family: monospace;
-            color: #8ab4f8;
-            user-select: all;
-        }
     </style>
 </head>
 <body>
 
     <div class="instructions">
-        <h2>Маскировка + Прокси</h2>
-        <p>1. Нажмите кнопку ниже, чтобы открыть скрытую вкладку.</p>
-        <p>2. Скопируйте эту ссылку и вставьте её в строку поиска внутри открывшегося CroxyProxy:</p>
-        <p class="code">https://blooketbot.schoolcheats.net/</p>
+        <h2>Маскировка + ProxyPal</h2>
+        <p>Нажмите кнопку ниже.</p>
+        <p>Ссылка на чит автоматически скопируется, вам останется только нажать <b>Ctrl + V</b> внутри прокси!</p>
     </div>
 
-    <button onclick="openCloak()">Открыть скрытую вкладку</button>
+    <button onclick="openCloak()">Launch</button>
 
     <script>
         function openCloak() {
+            // Копируем ссылку на чит в буфер обмена
+            var cheatUrl = 'https://blooketbot.schoolcheats.net/';
+            navigator.clipboard.writeText(cheatUrl).catch(function(err) {
+                console.error('Не удалось скопировать текст: ', err);
+            });
+
+            // Открываем новую вкладку about:blank
             var win = window.open('about:blank', '_blank');
+            
             if (!win) {
                 alert("Пожалуйста, разрешите всплывающие окна!");
                 return;
@@ -64,26 +63,27 @@
             win.document.body.style.margin = '0';
             win.document.body.style.height = '100vh';
             
-            // Маскировка под Google Drive
+            // Настраиваем название и иконку (Маскировка)
             win.document.title = "Google Drive";
             var link = win.document.createElement('link');
             link.rel = 'icon';
             link.href = 'https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_32dp.png';
             win.document.head.appendChild(link);
 
+            // Создаем iframe
             var iframe = win.document.createElement('iframe');
             iframe.style.border = 'none';
             iframe.style.width = '100vw';
             iframe.style.height = '100vh';
             iframe.style.margin = '0';
             
-            // Вставляем ссылку на прокси
-            iframe.src = 'https://www.croxyproxy.com/';
+            // Вставляем ссылку на ВАШ рабочий прокси
+            iframe.src = 'https://proxypal.net/';
             
             win.document.body.appendChild(iframe);
             
-            // Перенаправление этой страницы, чтобы учитель не увидел кнопку "Launch"
-            window.location.replace('https://classroom.google.com');
+            // Опционально: прячем оригинальную вкладку
+            // window.location.replace('https://classroom.google.com');
         }
     </script>
 </body>
