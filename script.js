@@ -1608,6 +1608,47 @@ var global = [
     },
     {
         type: "button",
+        name: "Lobby Crasher (Nuke)",
+        action: function (a) {
+            setUserVal("b", makeLongText(5e5)); // Overload with huge strings
+            setUserVal("bg", makeLongText(5e5));
+            setUserVal("tat", "crash:" + makeLongText(1e5));
+            a.innerText = "NUKING LOBBY...";
+            a.style.color = "red";
+            a.style.borderColor = "red";
+        },
+    },
+    {
+        type: "button",
+        name: "Scoreboard Breaker",
+        action: function (a) {
+            setUserVal("g", Infinity); // Standard gold modes
+            setUserVal("c", Infinity); // Crypto Hack
+            setUserVal("t", Infinity); // Toy Factory
+            a.innerText = "Broken!";
+        },
+    },
+    {
+        type: "button",
+        name: "Disco Blooks (Spam)",
+        action: function (a) {
+            if (a.spamming) {
+                clearInterval(a.spamming);
+                a.spamming = null;
+                a.innerText = "Disco Blooks (Spam)";
+                a.style.color = "white";
+            } else {
+                a.spamming = setInterval(() => {
+                    const randomBlook = blooks[Math.floor(Math.random() * blooks.length)];
+                    setUserVal("b", randomBlook);
+                }, 150); // Change blook every 150ms
+                a.innerText = "Stop Disco";
+                a.style.color = "#00FF00";
+            }
+        },
+    },
+    {
+        type: "button",
         name: "Open Chat",
         id: "ochat",
         action: function (a) {
