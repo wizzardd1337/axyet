@@ -284,10 +284,15 @@
         
         /* Cheat Panel Styling */
         .cheatcontainer {
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 12px;
             width: 100%;
+        }
+        
+        /* Make odd last items span both columns */
+        .cheatcontainer > *:last-child:nth-child(odd) {
+            grid-column: 1 / -1;
         }
         .button {
             background: rgba(255, 255, 255, 0.1);
