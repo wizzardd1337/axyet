@@ -2147,9 +2147,11 @@ function processCmd(msg) {
             break;
     }
 }
-document.querySelector("#drag").addEventListener("mouseup", (e) => {
-    dragging = false;
-});
+if (document.querySelector("#drag")) {
+    document.querySelector("#drag").addEventListener("mouseup", (e) => {
+        dragging = false;
+    });
+}
 async function genToken(gid, name) {
     const { fbToken, fbShardURL } = await fetch("https://project-hto5l.vercel.app/api/join", {
         body: JSON.stringify({
