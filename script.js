@@ -2531,7 +2531,7 @@ function setUsername() {
     localStorage.setItem("chatUsername", `${usernameInput.value}`);
 
     const signupcover = document.getElementById("signupcover");
-
+    
     signupcover.style.display = "none";
 
     checkUsername();
