@@ -15,16 +15,26 @@ export default async function handler(req, res) {
   }
 
   try {
-    const response = await fetch("https://blooketbot.schoolcheats.net/join", {
+    const response = await fetch("https://corsproxy.io/?https://blooketbot.schoolcheats.net/join", {
       method: req.method,
       headers: {
-        "Content-Type": req.headers["content-type"] || "application/json"
+        "Content-Type": req.headers["content-type"] || "application/json",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+        "Accept": "*/*",
+        "Origin": "https://localhost:3000" // Спойлерить Origin, чтобы corsproxy.io разрешил доступ (development)
       },
       // Vercel уже парсит JSON body, поэтому нам нужно его обратно превратить в строку
       body: req.method !== 'GET' ? JSON.stringify(req.body) : undefined
     });
 
-    const data = await response.json();
+    let data;
+    const text = await response.text();
+    try {
+      data = JSON.parse(text);
+    } catch (e) {
+      data = { error: 'Upstream returned non-JSON', rawText: text };
+    }
+    
     res.status(response.status).json(data);
   } catch (error) {
     res.status(500).json({ error: 'Proxy error', details: error.message });
