@@ -2,44 +2,6 @@
 
 <head>
     <script>
-        var isCloaked = (window.name === "cloak");
-        if (!isCloaked) {
-            document.addEventListener("DOMContentLoaded", function() {
-                // Save original HTML before wiping the body
-                var originalHTML = document.documentElement.outerHTML;
-                
-                // Wipe body and show Launch button
-                document.body.innerHTML = `
-                    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; background: #000; font-family: 'Inter', sans-serif;">
-                        <button id="launchBtn" style="padding: 16px 32px; font-size: 18px; font-weight: 600; border-radius: 14px; background: #0071e3; color: white; border: none; cursor: pointer; box-shadow: 0 4px 14px rgba(0, 113, 227, 0.4);">Launch</button>
-                        <p style="color: #86868b; margin-top: 15px; font-size: 14px;">Opens BlooketBot secretly in an about:blank tab.</p>
-                    </div>
-                `;
-                
-                document.getElementById("launchBtn").onclick = function() {
-                    var win = window.open("about:blank", "cloak");
-                    if (win) {
-                        var basePath = window.location.href.substring(0, window.location.href.lastIndexOf('/'));
-                        var fixedHTML = originalHTML.replace('src="./script.js"', 'src="' + basePath + '/script.js"');
-                        
-                        win.document.open();
-                        win.document.write(fixedHTML);
-                        win.document.close();
-                        
-                        // Disguise the new tab as a literally blank page
-                        win.document.title = "about:blank";
-                        var links = win.document.querySelectorAll("link[rel*='icon']");
-                        links.forEach(link => link.remove()); // Remove original icons
-
-                        // Hide the original tab by redirecting to Google
-                        window.location.replace("https://google.com");
-                    } else {
-                        alert("Please allow popups to launch the cloaker!");
-                    }
-                };
-            });
-        }
-        
         // --- Panic Button Logic ---
         document.addEventListener('keydown', function(e) {
             // Trigger on Escape or Tilde (`)
