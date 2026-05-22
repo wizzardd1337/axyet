@@ -1898,6 +1898,9 @@ function renderCheats(gm) {
     var c = document.getElementById("ctrlpanel");
     var codep = document.getElementById("cc");
     codep.style.display = "none";
+    c.style.display = "flex";
+    c.style.flexDirection = "column";
+    c.style.gap = "15px";
     c.appendChild(createNormText("Bot Successful! Type: " + gm));
     if (cheats[gm]) {
         c.appendChild(createNormText("Cheats: "));
