@@ -1685,7 +1685,7 @@ function onChat(msg, name) {
     }
 }
 
-function joinGame(code, name, icog) {
+function joinGame(code, name, icog, amount = 1) {
     if (!canJoin) {
         errorBar("Stop spamming the button dude!");
         return;
@@ -1698,16 +1698,34 @@ function joinGame(code, name, icog) {
         return;
     }
 
-    if (document.getElementById("bcf").getAttribute("checked")) {
-        name = bypassFilter(name);
-    }
-    if (document.getElementById("fpswitch").getAttribute("checked")) {
-        name = String.fromCharCode(32) + String.fromCharCode(32) + name;
-    }
-    oname = name;
-    connect(code, name, icog);
+    let isBypass = document.getElementById("bcf").getAttribute("checked") === "true";
+    let isFps = document.getElementById("fpswitch").getAttribute("checked") === "true";
 
-    setTimeout(() => { canJoin = true; }, 3000);
+    oname = name;
+
+    const flood = async () => {
+        for (let i = 0; i < amount; i++) {
+            let botName = amount > 1 ? `${name} ${i + 1}` : name;
+            
+            if (isBypass) {
+                botName = bypassFilter(botName);
+            }
+            if (isFps) {
+                botName = String.fromCharCode(32) + String.fromCharCode(32) + botName;
+            }
+            
+            // Allow connect to finish before sending the next
+            await new Promise(resolve => {
+                connect(code, botName, icog);
+                // Slight delay to not overwhelm the browser/network
+                setTimeout(resolve, 200); 
+            });
+        }
+    };
+    
+    flood();
+
+    setTimeout(() => { canJoin = true; }, 3000 + (amount * 200));
 }
 
 //setVal(`/${botinfo.gid}/a/${botinfo.name}/d`,56)
