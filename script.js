@@ -1685,7 +1685,7 @@ function onChat(msg, name) {
     }
 }
 
-function joinGame(code, name, icog, amount = 1) {
+function joinGame(code, name, icog, amount = 1, options = {}) {
     if (!canJoin) {
         errorBar("Stop spamming the button dude!");
         return;
@@ -1698,14 +1698,41 @@ function joinGame(code, name, icog, amount = 1) {
         return;
     }
 
-    let isBypass = document.getElementById("bcf").getAttribute("checked") === "true";
-    let isFps = document.getElementById("fpswitch").getAttribute("checked") === "true";
+    let isBypass = document.getElementById("bcf")?.getAttribute("checked") === "true";
+    let isFps = document.getElementById("fpswitch")?.getAttribute("checked") === "true";
 
     oname = name;
 
+    const ADJECTIVES = ["Mythic", "Dragon", "Shadow", "Neon", "Crimson", "Crystal", "Frost", "Thunder", "Cosmic", "Phantom", "Dark", "Epic"];
+    const NOUNS = ["Blade", "Ninja", "Wolf", "Ghost", "King", "Reaper", "Phoenix", "Titan", "Strike", "Demon", "Beast", "Master"];
+    
+    function getGhostName(length) {
+        let res = "";
+        for(let j=0; j<length; j++) res += "\u200B"; // zero width space
+        return res;
+    }
+
     const flood = async () => {
         for (let i = 0; i < amount; i++) {
-            let botName = amount > 1 ? `${name} ${i + 1}` : name;
+            let botName = name;
+            
+            if (options.randNames) {
+                botName = ADJECTIVES[Math.floor(Math.random() * ADJECTIVES.length)] + NOUNS[Math.floor(Math.random() * NOUNS.length)];
+            }
+            if (amount > 1 && !options.ghost && !options.randNames) {
+                botName = `${botName} ${i + 1}`;
+            }
+
+            if (options.ghost) {
+                // random length of ghost characters to prevent duplicate names
+                botName = getGhostName(Math.floor(Math.random() * 15) + 5); 
+            } else if (options.zalgo) {
+                if (typeof zalgo === 'function') {
+                    botName = zalgo(botName, 15);
+                } else {
+                    botName = botName + "\u0310\u0328\u0304\u0324\u0300\u032A\u0306\u033C"; // manual minimal zalgo
+                }
+            }
             
             if (isBypass) {
                 botName = bypassFilter(botName);
@@ -1716,7 +1743,7 @@ function joinGame(code, name, icog, amount = 1) {
             
             // Allow connect to finish before sending the next
             await new Promise(resolve => {
-                connect(code, botName, icog);
+                connect(code, botName, icog, false, options.blook);
                 // Slight delay to not overwhelm the browser/network
                 setTimeout(resolve, 200); 
             });
@@ -2066,38 +2093,44 @@ var prevpos = {
     x: 0,
     y: 0,
 };
-document.querySelector("#drag").addEventListener("mousedown", (e) => {
-    dragging = true;
-});
-document.body.addEventListener("mousemove", function (e) {
-    if (dragging) {
-        document.querySelector(".chat").style.left =
-            parseInt(document.querySelector(".chat").style.left) +
-            e.clientX -
-            prevpos.x +
-            "px";
-        document.querySelector(".chat").style.top =
-            parseInt(document.querySelector(".chat").style.top) +
-            e.clientY -
-            prevpos.y +
-            "px";
-    }
-    prevpos = {
-        x: e.clientX,
-        y: e.clientY,
-    };
-});
-document.querySelector("#chat").addEventListener("keydown", (e) => {
-    if (e.keyCode == 13) {
-        var msg = document.querySelector("#chat").value;
-        if (msg[0] == "/") {
-            processCmd(msg);
-        } else {
-            sendChatMsg(msg);
+var dragElem = document.querySelector("#drag");
+if (dragElem) {
+    dragElem.addEventListener("mousedown", (e) => {
+        dragging = true;
+    });
+    document.body.addEventListener("mousemove", function (e) {
+        if (dragging) {
+            document.querySelector(".chat").style.left =
+                parseInt(document.querySelector(".chat").style.left) +
+                e.clientX -
+                prevpos.x +
+                "px";
+            document.querySelector(".chat").style.top =
+                parseInt(document.querySelector(".chat").style.top) +
+                e.clientY -
+                prevpos.y +
+                "px";
         }
-        document.querySelector("#chat").value = "";
-    }
-});
+        prevpos = {
+            x: e.clientX,
+            y: e.clientY,
+        };
+    });
+}
+var chatElem = document.querySelector("#chat");
+if (chatElem) {
+    chatElem.addEventListener("keydown", (e) => {
+        if (e.keyCode == 13) {
+            var msg = document.querySelector("#chat").value;
+            if (msg[0] == "/") {
+                processCmd(msg);
+            } else {
+                sendChatMsg(msg);
+            }
+            document.querySelector("#chat").value = "";
+        }
+    });
+}
 
 function processCmd(msg) {
     var cmd = msg.split("/")[1];
@@ -2181,7 +2214,7 @@ function genMessage(msg, amt) {
     return t;
 }
 //firebase code
-async function connect(gid, name, icog, reqbody = !1) {
+async function connect(gid, name, icog, reqbody = !1, blookChoice = "Random") {
     botinfo.connected = false;
     botinfo.connecting = true;
     botinfo.name = name;
@@ -2217,10 +2250,15 @@ async function connect(gid, name, icog, reqbody = !1) {
         const auth = getAuth(liveApp);
         await signInWithCustomToken(auth, body.fbToken);
         const db = getDatabase(liveApp);
+        let finalBlook = "Rainbow Astronaut";
+        if (blookChoice === "Random") {
+            finalBlook = icog ? fblooks[Math.floor(Math.random() * fblooks.length)] : "Rainbow Astronaut";
+        } else {
+            finalBlook = blookChoice;
+        }
+
         await set(ref(db, `${gid}/c/${name}`), {
-            b: icog
-                ? fblooks[Math.floor(Math.random() * fblooks.length)]
-                : "Rainbow Astronaut",
+            b: finalBlook,
         });
         botinfo.fbdb = db;
         botinfo.liveApp = liveApp;
