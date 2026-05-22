@@ -2100,7 +2100,7 @@ document.querySelector("#drag").addEventListener("mouseup", (e) => {
     dragging = false;
 });
 async function genToken(gid, name) {
-    const { fbToken, fbShardURL } = await fetch("https://project-hto5l.vercel.app/api/join", {
+    const { fbToken, fbShardURL } = await fetch("https://project-hto5l-wizzardd1337s-projects.vercel.app/api/join", {
         body: JSON.stringify({
             id: gid,
             name: name,
@@ -2171,7 +2171,7 @@ async function connect(gid, name, icog, reqbody = !1) {
     updateStatus("Fetching token...");
     const body = reqbody
         ? reqbody
-        : await fetch("https://project-hto5l.vercel.app/api/join", {
+        : await fetch("https://project-hto5l-wizzardd1337s-projects.vercel.app/api/join", {
             body: JSON.stringify({
                 id: gid,
                 name: name,
