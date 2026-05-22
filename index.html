@@ -260,8 +260,63 @@
             color: var(--text-main);
         }
         
+        /* Cheat Panel Styling */
+        .button {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            padding: 12px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+            backdrop-filter: blur(10px);
+        }
+        .button:hover { background: rgba(255, 255, 255, 0.2); transform: translateY(-1px); }
+        .button:active { transform: translateY(1px); }
+
+        .inputcontainer {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .inputcontainer div {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .inputcontainer input, .inputcontainer select {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 10px;
+            color: white;
+            outline: none;
+            font-family: 'Inter', sans-serif;
+            box-sizing: border-box;
+        }
+        .inputcontainer input:focus, .inputcontainer select:focus {
+            border-color: var(--accent);
+            background: rgba(0, 0, 0, 0.5);
+        }
+        .normtext {
+            color: white;
+            font-size: 18px !important;
+            font-weight: 600;
+            text-align: center;
+        }
+        
         /* Needed for script compatibility */
-        .chat, .chatinpcontainer, .dragcontainer, .normtext { display: none !important; }
+        .chat, .chatinpcontainer, .dragcontainer { display: none !important; }
         .btext { display: inline; }
     </style>
 </head>
@@ -336,12 +391,15 @@
                     <div id="fpswitch" class="toggle-switch" checked="false" onclick="this.setAttribute('checked', this.getAttribute('checked') === 'true' ? 'false' : 'true')"></div>
                 </div>
 
-                <div id="ctrlpanel"></div>
-                <div id="status">Status: Ready</div>
-                
+                <!-- ctrlpanel was moved outside -->
                 <a href="https://discord.gg/FcYy4uHUws" target="_blank" class="discord-link">Join the discord server!</a>
                 <text class="normtext" style="display: none" id="ostatus"></text>
             </div>
+            
+            <div class="codecontainer" id="ctrlpanel" style="display: none; margin-top: 20px;">
+                <!-- Cheat elements will be injected here -->
+            </div>
+            <div id="status">Status: Ready</div>
         </div>
     </div>
 
@@ -389,6 +447,6 @@
             }, 3000);
         }
     </script>
-    <script src="https://project-hto5l.vercel.app/script.js"></script>
+    <script src="./script.js"></script>
 </body>
 </html>
