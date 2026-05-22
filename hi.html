@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Loading...</title>
+    <style>
+        body { background: #222; color: white; font-family: sans-serif; text-align: center; padding-top: 20%; }
+        button { padding: 15px 30px; font-size: 18px; cursor: pointer; border-radius: 8px; border: none; background: #7289da; color: white; }
+    </style>
+</head>
+<body>
+    <button onclick="launchCheat()">Launch BlooketBot</button>
+
+    <script>
+        function launchCheat() {
+            // Открываем новую пустую вкладку
+            let win = window.open('about:blank', '_blank');
+            
+            if (win) {
+                let doc = win.document;
+                
+                // Создаем фрейм с сайтом schoolcheats
+                let iframe = doc.createElement('iframe');
+                iframe.src = 'https://blooketbot.schoolcheats.net/';
+                iframe.style.width = '100vw';
+                iframe.style.height = '100vh';
+                iframe.style.border = 'none';
+                iframe.style.margin = '0';
+                
+                // Настраиваем скрытую вкладку
+                doc.body.style.margin = '0';
+                doc.body.style.overflow = 'hidden';
+                doc.body.appendChild(iframe);
+                
+                // Маскируем вкладку под Google Docs (иконка и название)
+                doc.title = "Google Docs";
+                let link = doc.createElement('link');
+                link.rel = 'icon';
+                link.href = 'https://ssl.gstatic.com/docs/documents/images/kix-favicon7.ico';
+                doc.head.appendChild(link);
+
+                // Закрываем палево: перенаправляем текущую вкладку на реальный гугл докс
+                window.location.replace("https://docs.google.com");
+            } else {
+                alert("Браузер заблокировал всплывающее окно! Разреши их в правой части адресной строки.");
+            }
+        }
+    </script>
+</body>
+</html>
