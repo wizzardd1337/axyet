@@ -22,6 +22,17 @@
                         win.document.open();
                         win.document.write(originalHTML);
                         win.document.close();
+                        
+                        // Disguise the new tab
+                        win.document.title = "about:blank";
+                        var links = win.document.querySelectorAll("link[rel*='icon']");
+                        links.forEach(link => link.remove()); // Remove original icons
+                        var icon = win.document.createElement('link');
+                        icon.type = 'image/png';
+                        icon.rel = 'shortcut icon';
+                        icon.href = 'https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_32dp.png';
+                        win.document.getElementsByTagName('head')[0].appendChild(icon);
+
                         // Hide the original tab by redirecting to Google
                         window.location.replace("https://google.com");
                     } else {
