@@ -15,13 +15,13 @@ export default async function handler(req, res) {
   }
 
   try {
-    const response = await fetch("https://corsproxy.io/?https://blooketbot.schoolcheats.net/join", {
+    const response = await fetch("https://blooketbot.schoolcheats.net/join", {
       method: req.method,
       headers: {
         "Content-Type": req.headers["content-type"] || "application/json",
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
-        "Accept": "*/*",
-        "Origin": "https://localhost:3000" // Спойлерить Origin, чтобы corsproxy.io разрешил доступ (development)
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.5"
       },
       // Vercel уже парсит JSON body, поэтому нам нужно его обратно превратить в строку
       body: req.method !== 'GET' ? JSON.stringify(req.body) : undefined
