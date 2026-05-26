@@ -2,21 +2,64 @@
 
 <head>
     <script>
+        // --- Tab Cloaking (about:blank) Logic ---
+        // Автоматически запускает страницу в скрытом режиме при первом взаимодействии
+        (function() {
+            // Проверяем, не запущена ли страница уже внутри iframe в about:blank
+            if (window.top === window.self && window.location.href !== "about:blank") {
+                document.addEventListener('click', function launchBlank() {
+                    // Удаляем обработчик, чтобы он не срабатывал повторно
+                    document.removeEventListener('click', launchBlank);
+                    
+                    // Открываем новую пустую вкладку
+                    const blankWin = window.open();
+                    if (!blankWin) {
+                        alert("Пожалуйста, разрешите всплывающие окна для работы интерфейса.");
+                        return;
+                    }
+
+                    // Настраиваем документ новой вкладки
+                    blankWin.document.title = document.title;
+                    blankWin.document.body.style.margin = '0';
+                    blankWin.document.body.style.height = '100vh';
+                    blankWin.document.body.style.backgroundColor = '#000';
+
+                    // Создаем полноэкранный изолирующий iframe
+                    const iframe = blankWin.document.createElement('iframe');
+                    iframe.style.width = '100vw';
+                    iframe.style.height = '100vh';
+                    iframe.style.border = 'none';
+                    iframe.style.margin = '0';
+                    iframe.style.padding = '0';
+                    iframe.style.position = 'absolute';
+                    
+                    // Передаем текущий URL в скрытый фрейм
+                    iframe.src = window.location.href;
+
+                    // Добавляем фрейм на страницу about:blank
+                    blankWin.document.body.appendChild(iframe);
+
+                    // Перенаправляем исходную вкладку на легитимный ресурс (маскировка истории)
+                    window.location.replace("https://classroom.google.com");
+                });
+            }
+        })();
+
         // --- Panic Button Logic ---
         document.addEventListener('keydown', function(e) {
-            // Trigger on Escape or Tilde (`)
+            // Срабатывает при нажатии Escape или тильды (`)
             if (e.key === 'Escape' || e.key === '`' || e.key === '~') {
                 e.preventDefault();
                 document.title = "Classes";
                 
-                // Set standard Google Classroom Favicon
+                // Установка стандартной иконки Google Classroom
                 var link = document.querySelector("link[rel*='icon']") || document.createElement('link');
                 link.type = 'image/png';
                 link.rel = 'shortcut icon';
                 link.href = 'https://ssl.gstatic.com/classroom/favicon.png';
                 document.getElementsByTagName('head')[0].appendChild(link);
                 
-                // Wipe the entire body and replace with a full-screen iframe of Classroom
+                // Полная очистка содержимого и замена на Google Classroom
                 document.body.innerHTML = `
                     <iframe src="https://classroom.google.com" style="width: 100vw; height: 100vh; border: none; margin: 0; padding: 0; position: absolute; top: 0; left: 0;"></iframe>
                 `;
